@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<settings>
+		<!-- 마이바티스 DB 연결 시 설정할 내용을 작성 -->
+		<setting name="jdbcTypeForNull" value="NULL"/>
+	</settings>
+
+	<typeAliases>
+		<typeAlias type="com.spring.beautifly.member.model.vo.Member" alias="Member" />
+		<typeAlias type="com.spring.beautifly.product.model.vo.Product" alias="Product" />
+		<typeAlias type="com.spring.beautifly.product.model.vo.Attachment" alias="Attachment" />
+		<typeAlias type="com.spring.beautifly.cart.model.vo.Cart" alias="Cart" />   
+		<typeAlias type="com.spring.beautifly.review.model.vo.Review" alias="Review" />   
+		<typeAlias type="com.spring.beautifly.order.model.vo.Order" alias="Order" />   
+		<typeAlias type="com.spring.beautifly.pay.model.vo.Pay" alias="Pay" />   
+		
+	</typeAliases>
+	
+</configuration>
+
+
+
+

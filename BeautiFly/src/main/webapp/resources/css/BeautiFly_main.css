@@ -1,0 +1,8 @@
+@charset "UTF-8";
+* {font-family:"맑은 고딕";}
+.footer-image{text-align: center;}
+.footer-textContent{
+	/* display:inline;  */
+	font-size: 10px;
+	/* float: left; */
+}

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="reviewMapper">
+
+	<resultMap id="resultReview" type="Review">
+	</resultMap>
+	   
+	 <!-- 화장품 상세 조회 페이지 ProductReview VO(Review) 용 쿼리 -->
+	 <select id="selectReviewList" parameterType="_int" resultType="Review">
+	    SELECT * FROM PRODUCTREVIEW WHERE PRODUCTNO = #{productNo} ORDER BY REVIEWNO DESC
+	 </select>
+	 
+	 <!-- 리뷰 추가 -->
+     <insert id="insertReview" parameterType="Review">
+        INSERT INTO PRODUCTREVIEW(
+            REVIEWNO, MEMBERID, PRODUCTNO, RATING, REVIEWCONTENT
+        ) VALUES (
+            CART_SEQ.NEXTVAL, #{memberId}, #{productNo}, #{rating}, #{reviewContent}
+        )
+     </insert>
+     
+     <!-- 리뷰 작성 후 상품 테이블 리뷰 총 횟수 추가 -->
+     <update id="updateReviewCount" parameterType="Product">
+     	UPDATE PRODUCT SET
+   			REVIEWCOUNT = REVIEWCOUNT + 1
+		WHERE PRODUCTNO = #{productNo}
+     </update>
+     
+     <!-- 리뷰 작성 후 상품 테이블 리뷰 평점 증가 -->
+     <update id="updateReviewRating" parameterType="Product">
+     	UPDATE PRODUCT 
+		    SET PRODUCTRATING = (SELECT ROUND(AVG(RATING)) FROM PRODUCTREVIEW WHERE PRODUCTNO = #{productNo})
+		    WHERE PRODUCTNO = #{productNo}
+     </update>
+	
+</mapper>

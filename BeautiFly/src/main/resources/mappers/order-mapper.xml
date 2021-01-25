@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="orderMapper">
+
+	<resultMap id="resultOrder" type="Order">
+	</resultMap>
+	
+	<!-- 주문 추가 -->
+    <insert id="insertOrder" parameterType="Order">
+       INSERT INTO PRODUCTORDER VALUES (
+           PRODUCTORDER_SEQ.NEXTVAL, #{memberId}, #{orderName}, #{orderAddress}, 
+			#{orderEmail}, #{orderTel}, #{orderPrice}, 0, #{orderMessage}, 'Y', 'N', #{productName} 
+       )
+    </insert>
+    
+    <!-- 정렬용 근데 사용 안 함 -->
+    <!-- 
+    <select id="selectOrderList" resultType="Order">
+    	SELECT * FROM PRODUCTORDER
+			WHERE ORDERNO = (SELECT MAX(ORDERNO) FROM PRODUCTORDER)
+    </select>
+     -->
+    
+    <!-- 회원 마이 페이지 주문 조회 페이지 셀렉트문 -->
+	<select id="selectOrderList" parameterType="string" resultType="Order">
+		SELECT * FROM (SELECT PO.PRODUCTNAME, PO.ORDERNAME, PO.ORDERADDRESS, PO.ORDEREMAIL, PO.ORDERTEL, PO.ORDERPRICE, P.PAYDATE , PO.PAYISOK
+				FROM PRODUCTORDER PO 
+				JOIN PAY P ON (PO.ORDERNO = P.ORDERNO)
+                WHERE PO.MEMBERID = #{memberId} AND 1=1 
+				ORDER BY P.PAYNO DESC) PRO
+ 			WHERE 1=1
+    </select>
+    
+    <!-- member 테이블에 포인트 적립 해주기 -->
+    <update id="updateMemberPoint" parameterType="string">
+    	UPDATE MEMBER SET
+		    MEMBERPOINT = MEMBERPOINT + 1
+		WHERE MEMBERID = #{memberId}
+    </update>
+    
+    <select id="selectOrderList2" resultType="Order">
+    	SELECT * FROM (SELECT PO.PRODUCTNAME, PO.ORDERNAME, PO.ORDERADDRESS, PO.ORDEREMAIL, PO.ORDERTEL, PO.ORDERPRICE, P.PAYDATE , PO.PAYISOK
+				FROM PRODUCTORDER PO 
+				JOIN PAY P ON (PO.ORDERNO = P.ORDERNO) 
+				ORDER BY P.PAYNO DESC) PRO
+ 			WHERE 1=1
+    </select>
+	 
+</mapper>
